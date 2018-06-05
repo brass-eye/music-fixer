@@ -3,6 +3,10 @@ import os
 import string
 import sys
 
+'''
+This is shit. Write it again using os.walk
+'''
+
 # for root, dirs, files in os.walk('/home/aiden/Music'):
     # print(root)
     # print(dirs)
@@ -19,17 +23,21 @@ def capitalise(word):
 
 manual = []
 working_dir = os.path.abspath(sys.argv[1])
+# can u use a comprehension to filter out the not directories here
 for directory in os.listdir(working_dir):
-    directory_parts = directory.split(' - ')
-    if len(directory_parts) > 1:
-        artist = capitalise(directory_parts[0])
-        album = capitalise(' - '.join(directory_parts[1:]))
-        new_directory = working_dir + '/sorted1/' + artist + '/' + album 
-        # if not os.path.exists(new_directory):
-            # os.makedirs(new_directory)
-        full_path = (working_dir + '/' + directory)
-        for f in os.listdir(full_path):
-                print(f)
+    if '.mp3' not in directory and 'mosse' not in directory:
+        directory_parts = directory.split(' - ')
+        if len(directory_parts) > 1:
+            artist = capitalise(directory_parts[0])
+            album = capitalise(' - '.join(directory_parts[1:]))
+            new_directory = working_dir + '/sorted1/' + artist + '/' + album 
+            if not os.path.exists(new_directory):
+                os.makedirs(new_directory)
+            full_path = (working_dir + '/' + directory)
+            print("mv " + full_path + " " + new_directory)
+            os.rename( full_path, new_directory )
+            # for f in os.listdir(full_path):
+                # print("w: " + directory + "/" + f + " to: " +  new_directory + "/" + f)
 
     else:
         manual.append(directory)
